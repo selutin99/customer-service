@@ -72,6 +72,14 @@ public class PaidTypeServiceImpl implements PaidTypeService {
     }
 
     @Override
+    public List<PaidType> getPaidTypeByCustomers(int id) {
+        log.severe("Получение типов по заказчику с id="+id);
+        List<PaidType> listOfPaidTypes = new ArrayList<>();
+        paidTypeRepository.findByCustomers_Id(id).forEach(e -> listOfPaidTypes.add(e));
+        return listOfPaidTypes;
+    }
+
+    @Override
     public List<PaidType> getAllPaidTypes() {
         log.severe("Получение всех типов");
         List<PaidType> listOfPaidTypes = new ArrayList<>();

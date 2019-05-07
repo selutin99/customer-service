@@ -10,5 +10,7 @@ public interface PaidTypeService {
     void deletePaidType(int id);
 
     PaidType getPaidTypeByID(int id);
+
+    List<PaidType> getPaidTypeByCustomers(int id);
     List<PaidType> getAllPaidTypes();
 }

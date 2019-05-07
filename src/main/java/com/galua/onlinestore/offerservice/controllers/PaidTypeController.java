@@ -31,6 +31,19 @@ public class PaidTypeController {
         }
     }
 
+    @GetMapping("paidtype/customers/{id}")
+    public ResponseEntity<List<PaidType>> getPaidTypeByCustomers(@PathVariable("id") int id) {
+        try {
+            List<PaidType> list = paidTypeService.getPaidTypeByCustomers(id);
+            log.severe("Типы найдены успешно");
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            log.severe("Типы не найдены");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("paidtype")
     public ResponseEntity<List<PaidType>> getAllPaidType() {
         List<PaidType> list = paidTypeService.getAllPaidTypes();

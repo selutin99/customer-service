@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PaidTypeRepo extends CrudRepository<PaidType, Integer> {
     List<PaidType> findByName(String name);
+
+    List<PaidType> findByCustomers_Id(int id);
 }
