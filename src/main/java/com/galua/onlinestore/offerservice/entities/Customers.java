@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Data
-@EqualsAndHashCode(exclude = "types")
-@ToString(exclude = "types")
+@EqualsAndHashCode(exclude = {"types", "roles"})
+@ToString(exclude = {"types", "roles"})
 @NoArgsConstructor
 @Entity
 @Table(name="customers")
@@ -57,9 +57,9 @@ public class Customers {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "customer_roles",
-            joinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private List<Roles> roles;
+               joinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")},
+               inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Roles> roles = new ArrayList<>();
 
     public Customers(int id, String firstName, String lastName, String email, String password, String phoneNumber, PaidType... types) {
         this.id = id;

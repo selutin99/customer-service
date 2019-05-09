@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +53,7 @@ public class AuthentificationController {
         }
     }
 
+    /*
     @GetMapping("find")
     public ResponseEntity findCustomerByToken(HttpServletRequest request){
         String token = request.getHeader("Authorization");
@@ -65,5 +65,12 @@ public class AuthentificationController {
         else{
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
+    }*/
+
+    @GetMapping("find")
+    public ResponseEntity findCustomerByToken(@RequestBody String token){
+        String email = jwtTokenProvider.getUsername(token);
+        Customers customer = customersService.getCustomerByEmail(email);
+        return new ResponseEntity(customer.getId(), HttpStatus.OK);
     }
 }
