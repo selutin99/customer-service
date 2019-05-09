@@ -1,7 +1,8 @@
 package com.galua.onlinestore.offerservice.security.jwt;
 
 import com.galua.onlinestore.offerservice.entities.Customers;
-import com.galua.onlinestore.offerservice.entities.PaidType;
+import com.galua.onlinestore.offerservice.entities.Roles;
+import com.galua.onlinestore.offerservice.entities.Status;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -22,13 +23,13 @@ public final class JwtCustomerFactory {
                 customer.getEmail(),
                 customer.getPassword(),
                 customer.getPhoneNumber(),
-                true,
-                mapToGrantedAuthorities(new ArrayList<>(customer.getTypes()))
+                customer.getStatus().equals(Status.ACTIVE),
+                mapToGrantedAuthorities(new ArrayList<>(customer.getRoles()))
         );
     }
 
-    private static List<GrantedAuthority> mapToGrantedAuthorities(List<PaidType> customerPaidTypes) {
-        return customerPaidTypes.stream()
+    private static List<GrantedAuthority> mapToGrantedAuthorities(List<Roles> customerRoles) {
+        return customerRoles.stream()
                 .map(role ->
                         new SimpleGrantedAuthority(role.getName())
                 ).collect(Collectors.toList());

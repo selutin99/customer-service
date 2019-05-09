@@ -1,5 +1,6 @@
 package com.galua.onlinestore.offerservice.controllers;
 
+import com.galua.onlinestore.offerservice.dto.CustomersDTO;
 import com.galua.onlinestore.offerservice.entities.Customers;
 import com.galua.onlinestore.offerservice.services.CustomersService;
 import lombok.extern.java.Log;
@@ -20,11 +21,12 @@ public class CustomersController {
     private CustomersService customersService;
 
     @GetMapping("customers/{id}")
-    public ResponseEntity<Customers> getCustomersByID(@PathVariable("id") int id) {
+    public ResponseEntity<CustomersDTO> getCustomersByID(@PathVariable("id") int id) {
         try {
-            Customers offer = customersService.getCustomerByID(id);
+            Customers customer = customersService.getCustomerByID(id);
             log.severe("Заказчик найден успешно");
-            return new ResponseEntity<>(offer, HttpStatus.OK);
+            CustomersDTO customersDTO = CustomersDTO.fromCustomer(customer);
+            return new ResponseEntity<>(customersDTO, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             log.severe("Заказчик не найден");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

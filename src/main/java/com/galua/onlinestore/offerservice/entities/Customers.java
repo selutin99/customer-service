@@ -36,6 +36,10 @@ public class Customers {
     @Column(unique = true)
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -50,6 +54,12 @@ public class Customers {
                joinColumns = @JoinColumn(name = "paid_type_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
     private List<PaidType> types = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_roles",
+            joinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Roles> roles;
 
     public Customers(int id, String firstName, String lastName, String email, String password, String phoneNumber, PaidType... types) {
         this.id = id;

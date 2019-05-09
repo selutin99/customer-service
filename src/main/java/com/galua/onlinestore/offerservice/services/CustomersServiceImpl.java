@@ -1,6 +1,7 @@
 package com.galua.onlinestore.offerservice.services;
 
 import com.galua.onlinestore.offerservice.entities.Customers;
+import com.galua.onlinestore.offerservice.entities.Status;
 import com.galua.onlinestore.offerservice.repositories.CustomersRepo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class CustomersServiceImpl implements CustomersService {
         findCustomer.setPassword(customer.getPassword());
         findCustomer.setAddress(customer.getAddress());
         findCustomer.setTypes(customer.getTypes());
+        findCustomer.setStatus(Status.ACTIVE);
+        findCustomer.setRoles(customer.getRoles());
 
         List<Customers> list = customerRepositoty.findByEmailOrPhoneNumber(customer.getEmail(), customer.getPhoneNumber());
         if(customer.getEmail().equals(findCustomer.getEmail()) || customer.getPhoneNumber().equals(findCustomer.getPhoneNumber())) {
