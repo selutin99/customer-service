@@ -1,7 +1,7 @@
 package com.galua.onlinestore.offerservice.controllers;
 
 import com.galua.onlinestore.offerservice.entities.Customers;
-import com.galua.onlinestore.offerservice.services.CustomerService;
+import com.galua.onlinestore.offerservice.services.CustomersService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,12 +17,12 @@ import java.util.NoSuchElementException;
 @RestController
 public class CustomersController {
     @Autowired
-    private CustomerService customerService;
+    private CustomersService customersService;
 
     @GetMapping("customers/{id}")
     public ResponseEntity<Customers> getCustomersByID(@PathVariable("id") int id) {
         try {
-            Customers offer = customerService.getCustomerByID(id);
+            Customers offer = customersService.getCustomerByID(id);
             log.severe("Заказчик найден успешно");
             return new ResponseEntity<>(offer, HttpStatus.OK);
         } catch (NoSuchElementException e) {
@@ -33,7 +33,7 @@ public class CustomersController {
 
     @GetMapping("customers")
     public ResponseEntity<List<Customers>> getAllCustomers() {
-        List<Customers> list = customerService.getAllCustomers();
+        List<Customers> list = customersService.getAllCustomers();
         log.severe("Получены все заказчики");
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class CustomersController {
     public ResponseEntity addCustomers(@RequestBody Customers customers, UriComponentsBuilder builder) {
         Customers customer = null;
         try {
-            customer = customerService.createCustomer(customers);
+            customer = customersService.createCustomer(customers);
         }
         catch(IllegalArgumentException e){
             log.severe("Попытка добавления существующего заказчика");
@@ -62,7 +62,7 @@ public class CustomersController {
     public ResponseEntity<Customers> updateCustomers(@PathVariable(value = "id") int id,
                                                   @RequestBody Customers offer) {
         try {
-            customerService.updateCustomer(id, offer);
+            customersService.updateCustomer(id, offer);
             log.severe("Сведения о заказчике обновлены успешно");
             return new ResponseEntity<>(offer, HttpStatus.OK);
         }
@@ -79,7 +79,7 @@ public class CustomersController {
     @DeleteMapping("customers/{id}")
     public ResponseEntity<Void> deleteCustomers(@PathVariable("id") int id) {
         try {
-            customerService.deleteCustomer(id);
+            customersService.deleteCustomer(id);
             log.severe("Заказчик удалён успешно");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

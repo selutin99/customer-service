@@ -4,6 +4,7 @@ import com.galua.onlinestore.offerservice.entities.Customers;
 import com.galua.onlinestore.offerservice.repositories.CustomersRepo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,10 +12,13 @@ import java.util.List;
 
 @Log
 @Service
-public class CustomersServiceImpl implements CustomerService {
+public class CustomersServiceImpl implements CustomersService {
 
     @Autowired
     private CustomersRepo customerRepositoty;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Customers createCustomer(Customers customer) {
@@ -22,12 +26,13 @@ public class CustomersServiceImpl implements CustomerService {
             log.severe("Не было передано заказчика");
             throw new IllegalArgumentException("Заказчик не передан");
         }
-        List<Customers> list = customerRepositoty.findByEmail(customer.getEmail());
+        List<Customers> list = customerRepositoty.findByEmailOrPhoneNumber(customer.getEmail(), customer.getPhoneNumber());
         if (list.size() > 0) {
             log.severe("Был передан существующий заказчик");
             throw new IllegalArgumentException("Заказчик уже существует");
         }
         else {
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             customerRepositoty.save(customer);
             log.severe("Сохранение заказчика: " +customer);
             return customer;
@@ -67,6 +72,18 @@ public class CustomersServiceImpl implements CustomerService {
     public Customers getCustomerByID(int id) {
         log.severe("Получение заказчика с id="+id);
         return customerRepositoty.findById(id).get();
+    }
+
+    @Override
+    public Customers getCustomerByEmail(String email) {
+        log.severe("Получение заказчика с email: "+email);
+        return customerRepositoty.findByEmail(email);
+    }
+
+    @Override
+    public Customers getCustomerByPhone(String phone) {
+        log.severe("Получение заказчика с телефоном: "+phone);
+        return customerRepositoty.findByEmail(phone);
     }
 
     @Override

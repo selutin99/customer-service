@@ -29,7 +29,7 @@ public class PaidType {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
                 },
-                mappedBy = "paidType")
+                mappedBy = "types")
     private List<Customers> customers = new ArrayList<>();
 
     public PaidType(String name) {

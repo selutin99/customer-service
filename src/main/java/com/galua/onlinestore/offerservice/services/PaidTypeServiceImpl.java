@@ -17,7 +17,7 @@ public class PaidTypeServiceImpl implements PaidTypeService {
     private PaidTypeRepo paidTypeRepository;
 
     @Autowired
-    private CustomerService customerService;
+    private CustomersService customersService;
 
     @Override
     public void createPaidType(PaidType paidType) {
