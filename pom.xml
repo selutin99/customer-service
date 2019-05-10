@@ -78,6 +78,19 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Build an executable JAR -->
+			<!--<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.galua.onlinestore.customerservice.CustomerServiceApplication</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>-->
 		</plugins>
 	</build>
 

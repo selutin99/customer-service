@@ -1,6 +1,7 @@
 package com.galua.onlinestore.customerservice.controllers;
 
 import com.galua.onlinestore.customerservice.entities.Customers;
+import com.galua.onlinestore.customerservice.entities.PaidType;
 import com.galua.onlinestore.customerservice.services.CustomersService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,19 @@ public class CustomersController {
             return new ResponseEntity<>(customer, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             log.severe("Заказчик не найден");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("customers/paidtype/{id}")
+    public ResponseEntity<List<PaidType>> getPaidTypeByCustomers(@PathVariable("id") int id) {
+        try {
+            List<PaidType> list = customersService.getCustomerByID(id).getTypes();
+            log.severe("Типы найдены успешно");
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            log.severe("Типы не найдены");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

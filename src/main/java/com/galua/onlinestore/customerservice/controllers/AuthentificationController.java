@@ -56,8 +56,13 @@ public class AuthentificationController {
 
     @GetMapping("customer")
     public ResponseEntity<Integer> findCustomerByToken(HttpServletRequest request){
-        String email = request.getUserPrincipal().getName();
-        int id = customersService.getCustomerByEmail(email).getId();
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        try {
+            String email = request.getUserPrincipal().getName();
+            int id = customersService.getCustomerByEmail(email).getId();
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

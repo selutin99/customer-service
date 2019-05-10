@@ -19,6 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String LOGIN_ENDPOINT = "/auth/**";
+    private static final String OFFER_SERVICE = "/customers/paidtype/**";
 
     @Autowired
     public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -40,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers(LOGIN_ENDPOINT).permitAll()
+            .antMatchers(OFFER_SERVICE).permitAll()
             .antMatchers(HttpMethod.POST, "/customers").permitAll()
             .anyRequest().authenticated()
             .and()
