@@ -3,12 +3,14 @@ package com.galua.onlinestore.offerservice.services;
 import com.galua.onlinestore.offerservice.entities.Customers;
 import com.galua.onlinestore.offerservice.entities.Status;
 import com.galua.onlinestore.offerservice.repositories.CustomersRepo;
+import com.galua.onlinestore.offerservice.repositories.RolesRepo;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Log
@@ -17,6 +19,9 @@ public class CustomersServiceImpl implements CustomersService {
 
     @Autowired
     private CustomersRepo customerRepositoty;
+
+    @Autowired
+    private RolesRepo rolesRepo;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -34,6 +39,9 @@ public class CustomersServiceImpl implements CustomersService {
         }
         else {
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            customer.setRoles(Arrays.asList(rolesRepo.findByName("ROLE_USER")));
+            customer.setStatus(Status.ACTIVE);
+
             customerRepositoty.save(customer);
             log.severe("Сохранение заказчика: " +customer);
             return customer;
@@ -81,12 +89,6 @@ public class CustomersServiceImpl implements CustomersService {
     public Customers getCustomerByEmail(String email) {
         log.severe("Получение заказчика с email: "+email);
         return customerRepositoty.findByEmail(email);
-    }
-
-    @Override
-    public Customers getCustomerByPhone(String phone) {
-        log.severe("Получение заказчика с телефоном: "+phone);
-        return customerRepositoty.findByEmail(phone);
     }
 
     @Override

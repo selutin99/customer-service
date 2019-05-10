@@ -11,7 +11,6 @@ public interface CustomersService {
 
     Customers getCustomerByID(int id);
     Customers getCustomerByEmail(String email);
-    Customers getCustomerByPhone(String phone);
 
     List<Customers> getAllCustomers();
 }

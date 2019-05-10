@@ -13,7 +13,6 @@ public interface CustomersRepo extends CrudRepository<Customers, Integer> {
     List<Customers> findByFirstNameAndLastName(String firstName, String lastName);
 
     Customers findByEmail(String email);
-    Customers findByPhoneNumber(String phoneNumber);
 
     List<Customers> findByEmailOrPhoneNumber(String email, String phoneNumber);
 
