@@ -13,4 +13,6 @@ public interface CustomersService {
     Customers getCustomerByEmail(String email);
 
     List<Customers> getAllCustomers();
+
+    void checkExist();
 }
