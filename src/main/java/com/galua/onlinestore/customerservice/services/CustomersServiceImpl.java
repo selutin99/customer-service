@@ -55,7 +55,7 @@ public class CustomersServiceImpl implements CustomersService {
         findCustomer.setFirstName(customer.getFirstName());
         findCustomer.setLastName(customer.getLastName());
         findCustomer.setEmail(customer.getEmail());
-        findCustomer.setPassword(customer.getPassword());
+        findCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
         findCustomer.setAddress(customer.getAddress());
         findCustomer.setTypes(customer.getTypes());
         findCustomer.setStatus(Status.ACTIVE);

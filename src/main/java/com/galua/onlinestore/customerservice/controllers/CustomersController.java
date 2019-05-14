@@ -2,12 +2,14 @@ package com.galua.onlinestore.customerservice.controllers;
 
 import com.galua.onlinestore.customerservice.entities.Customers;
 import com.galua.onlinestore.customerservice.entities.PaidType;
+import com.galua.onlinestore.customerservice.security.jwt.JwtTokenProvider;
 import com.galua.onlinestore.customerservice.services.CustomersService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,6 +21,9 @@ import java.util.NoSuchElementException;
 public class CustomersController {
     @Autowired
     private CustomersService customersService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("customers/{id}")
     public ResponseEntity<Customers> getCustomersByID(@PathVariable("id") int id) {
@@ -33,11 +38,18 @@ public class CustomersController {
     }
 
     @GetMapping("customers/paidtype/{id}")
-    public ResponseEntity<List<PaidType>> getPaidTypeByCustomers(@PathVariable("id") int id) {
+    public ResponseEntity<List<PaidType>> getPaidTypeByCustomers(@PathVariable("id") int id,
+                                                                 @RequestHeader("Authorization") String token) {
         try {
-            List<PaidType> list = customersService.getCustomerByID(id).getTypes();
-            log.severe("Типы найдены успешно");
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            log.severe("Передаваемый токен: "+token);
+            if(jwtTokenProvider.validateToken(token.substring(7))) {
+                List<PaidType> list = customersService.getCustomerByID(id).getTypes();
+                log.severe("Типы найдены успешно");
+                return new ResponseEntity<>(list, HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
         }
         catch (NoSuchElementException e) {
             log.severe("Типы не найдены");

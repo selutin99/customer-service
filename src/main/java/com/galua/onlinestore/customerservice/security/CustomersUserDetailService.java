@@ -23,7 +23,7 @@ public class CustomersUserDetailService implements UserDetailsService {
         Customers customer = customersService.getCustomerByEmail(email);
 
         if (customer == null) {
-            throw new UsernameNotFoundException("Заказчик не найден!");
+            return null;
         }
 
         log.severe("Заказчик загружен");

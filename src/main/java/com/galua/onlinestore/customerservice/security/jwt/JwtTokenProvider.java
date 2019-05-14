@@ -79,7 +79,7 @@ public class JwtTokenProvider {
             return true;
         }
         catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Неверный токен");
+            return false;
         }
     }
 }
