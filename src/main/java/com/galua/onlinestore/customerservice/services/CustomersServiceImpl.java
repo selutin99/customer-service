@@ -1,7 +1,6 @@
 package com.galua.onlinestore.customerservice.services;
 
 import com.galua.onlinestore.customerservice.entities.Customers;
-import com.galua.onlinestore.customerservice.entities.Roles;
 import com.galua.onlinestore.customerservice.entities.Status;
 import com.galua.onlinestore.customerservice.repositories.CustomersRepo;
 import com.galua.onlinestore.customerservice.repositories.RolesRepo;
@@ -98,29 +97,6 @@ public class CustomersServiceImpl implements CustomersService {
         List<Customers> listCustomers = new ArrayList<>();
         customerRepositoty.findAll().forEach(e -> listCustomers.add(e));
         return listCustomers;
-    }
-
-    @Override
-    public void checkExist() {
-        if(customerRepositoty.findByEmail("offer@mail.ru")==null){
-            Customers customer = new Customers();
-
-            customer.setId(1);
-            customer.setFirstName("Оффес");
-            customer.setLastName("Сервис");
-            customer.setEmail("offer@mail.ru");
-            customer.setPassword(passwordEncoder.encode("12345"));
-            customer.setAddress(null);
-            customer.setTypes(null);
-            customer.setStatus(Status.ACTIVE);
-            customer.setRoles(Arrays.asList(rolesRepo.findByName("ROLE_USER")));
-
-            customerRepositoty.save(customer);
-            log.severe("Пользователь оффер-сервиса успешно создан");
-        }
-        else{
-            log.severe("Пользователь уже существует");
-        }
     }
 }
 
